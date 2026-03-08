@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>时间计算器</title>
     <style>
         * {
@@ -16,56 +16,58 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 16px;
+            padding: 12px;
         }
         .card {
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(8px);
-            border-radius: 40px;
+            border-radius: 32px;
             box-shadow: 0 20px 40px rgba(0, 20, 40, 0.15);
-            padding: 32px 28px;
+            padding: 28px 20px;
             width: 100%;
-            max-width: 680px;
+            max-width: 500px; /* 手机友好宽度 */
             border: 1px solid rgba(255,255,255,0.6);
         }
         h1 {
-            font-size: 2.2rem;
+            font-size: 1.9rem;
             font-weight: 600;
-            margin: 0 0 12px 0;
+            margin: 0 0 10px 0;
             color: #1a2e4f;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+            flex-wrap: wrap;
         }
         h1 span {
             background: #1e3e6e;
             color: white;
-            font-size: 0.9rem;
-            padding: 4px 14px;
+            font-size: 0.75rem;
+            padding: 4px 12px;
             border-radius: 60px;
             font-weight: 400;
+            white-space: nowrap;
         }
         .sub {
             color: #2c3e66;
-            margin-bottom: 28px;
-            font-size: 1rem;
+            margin-bottom: 24px;
+            font-size: 0.95rem;
             border-left: 4px solid #4b7bec;
-            padding-left: 16px;
+            padding-left: 14px;
             background: rgba(75, 123, 236, 0.05);
             border-radius: 0 12px 12px 0;
         }
         .field {
-            margin-bottom: 24px;
+            margin-bottom: 20px;
             background: white;
-            border-radius: 28px;
-            padding: 16px 22px;
+            border-radius: 24px;
+            padding: 14px 16px;
             box-shadow: 0 4px 12px rgba(0,20,40,0.04);
             border: 1px solid rgba(0,0,0,0.02);
         }
         .label-row {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             flex-wrap: wrap;
             margin-bottom: 10px;
         }
@@ -73,17 +75,42 @@
             font-weight: 600;
             color: #1e3a6b;
             font-size: 1.1rem;
-            min-width: 70px;
+            min-width: 60px;
         }
-        .input-group {
-            display: flex;
-            flex-wrap: wrap;
+        .now-btn {
+            background: white;
+            border: 1.5px solid #bdd3f0;
+            color: #1e3e6e;
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.15s;
+            display: inline-flex;
             align-items: center;
-            gap: 12px;
+            gap: 5px;
+            flex: 0 0 auto;
+        }
+        .now-btn:hover {
+            background: #e5efff;
+            border-color: #4b7bec;
+        }
+        /* 移动端按钮自适应 */
+        @media (max-width: 480px) {
+            .now-btn {
+                width: 100%;
+                justify-content: center;
+                margin-top: 6px;
+            }
+            .label-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
         }
         .input-group input[type="datetime-local"] {
-            flex: 2 1 240px;
-            padding: 14px 18px;
+            width: 100%;
+            padding: 14px 16px;
             border: 1.5px solid #d0ddee;
             border-radius: 40px;
             font-size: 1rem;
@@ -91,133 +118,146 @@
             transition: 0.15s;
             outline: none;
             color: #0a2540;
+            -webkit-appearance: none;
         }
         .input-group input[type="datetime-local"]:focus {
             border-color: #4b7bec;
             box-shadow: 0 0 0 4px rgba(75, 123, 236, 0.2);
         }
-        .now-btn {
-            background: white;
-            border: 1.5px solid #bdd3f0;
-            color: #1e3e6e;
-            padding: 10px 22px;
-            border-radius: 40px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: 0.15s;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            flex: 0 0 auto;
+        /* 让日期输入框在小屏上字体稍小，防止溢出 */
+        @media (max-width: 480px) {
+            .input-group input[type="datetime-local"] {
+                font-size: 0.95rem;
+                padding: 12px 14px;
+            }
         }
-        .now-btn:hover {
-            background: #e5efff;
-            border-color: #4b7bec;
-        }
+
         .action-area {
             display: flex;
             flex-wrap: wrap;
             align-items: center;
             justify-content: space-between;
-            margin: 32px 0 20px;
-            gap: 16px;
+            margin: 28px 0 16px;
+            gap: 12px;
         }
         .calculate-btn {
             background: #1e3e6e;
             border: none;
             color: white;
-            padding: 16px 40px;
+            padding: 16px 24px;
             border-radius: 60px;
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             font-weight: 600;
             cursor: pointer;
             transition: 0.2s;
             box-shadow: 0 8px 18px rgba(28, 60, 120, 0.3);
-            flex: 1 1 auto;
-        }
-        .calculate-btn:hover {
-            background: #234d84;
-            transform: translateY(-2px);
-            box-shadow: 0 14px 24px rgba(28, 60, 120, 0.35);
+            flex: 2 1 auto;
         }
         .reset-btn {
             background: transparent;
             border: 1.5px solid #98b9e9;
             color: #1e3e6e;
-            padding: 14px 24px;
+            padding: 14px 20px;
             border-radius: 60px;
             font-weight: 600;
             cursor: pointer;
             transition: 0.15s;
             font-size: 1rem;
+            flex: 1 1 auto;
         }
-        .reset-btn:hover {
-            background: rgba(75, 123, 236, 0.1);
+        /* 移动端操作按钮堆叠 */
+        @media (max-width: 480px) {
+            .action-area {
+                flex-direction: column;
+            }
+            .calculate-btn, .reset-btn {
+                width: 100%;
+            }
         }
+
         .result-box {
             background: #0e213b;
-            border-radius: 32px;
-            padding: 24px 28px;
+            border-radius: 28px;
+            padding: 20px;
             color: white;
-            margin-top: 24px;
+            margin-top: 20px;
             box-shadow: inset 0 2px 8px rgba(0,0,0,0.2), 0 12px 24px rgba(0,10,30,0.2);
         }
         .result-box h3 {
-            margin: 0 0 12px 0;
+            margin: 0 0 8px 0;
             font-weight: 500;
             color: #b3d0ff;
+            font-size: 1.1rem;
         }
         .diff-value {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 700;
             background: rgba(255,255,255,0.06);
-            padding: 16px 20px;
+            padding: 14px 16px;
             border-radius: 24px;
             border: 1px solid rgba(255,255,255,0.1);
-            margin: 12px 0 8px;
+            margin: 10px 0 8px;
+            word-break: break-word;
+            line-height: 1.3;
+        }
+        /* 移动端结果字体微调 */
+        @media (max-width: 480px) {
+            .diff-value {
+                font-size: 1.5rem;
+                padding: 12px;
+            }
         }
         .diff-ms {
-            font-size: 1rem;
+            font-size: 0.9rem;
             opacity: 0.75;
             font-family: monospace;
             background: rgba(0,0,0,0.3);
             display: inline-block;
-            padding: 6px 18px;
+            padding: 5px 16px;
             border-radius: 60px;
         }
         .error-message {
             color: #ffb8b8;
             background: #5e2e3a;
-            padding: 14px 22px;
+            padding: 12px 18px;
             border-radius: 60px;
             font-weight: 500;
             margin: 12px 0 0;
             border-left: 5px solid #ff6b6b;
+            font-size: 0.95rem;
         }
         .footnote {
             color: #4c6496;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             text-align: center;
-            margin-top: 24px;
+            margin-top: 20px;
             border-top: 1px dashed #b7cef0;
-            padding-top: 20px;
+            padding-top: 16px;
+        }
+        /* 显示开始/结束时间的文字在手机上更紧凑 */
+        .meta-times {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid #2a4066;
+            margin: 14px 0;
         }
     </style>
 </head>
 <body>
 <div id="root"></div>
 
-<!-- 使用正确的 React 18 CDN 链接 -->
+<!-- React 18 + Babel (CDN) -->
 <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-<!-- Babel Standalone 编译 JSX -->
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
 <script type="text/babel">
     const { useState } = React;
 
-    // 辅助：日期时间字符串 <-> 本地 Date
     function formatDateForInput(date) {
         const year = date.getFullYear();
         const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -289,32 +329,37 @@
                 <h1>⏱️ 时间计算器 <span>本地时间</span></h1>
                 <div className="sub">精确计算两个日期时间之差 (精确到秒)</div>
 
+                {/* 开始时间 */}
                 <div className="field">
                     <div className="label-row">
                         <label>🔹 开始</label>
                         <button className="now-btn" onClick={setStartNow} type="button">📅 设为当前时间</button>
                     </div>
-                    <input
-                        type="datetime-local"
-                        value={startDate}
-                        onChange={(e) => setStartDate(e.target.value)}
-                        style={{ width: '100%', padding: '14px 18px', borderRadius: '40px', border: '1.5px solid #d0ddee' }}
-                    />
+                    <div className="input-group">
+                        <input
+                            type="datetime-local"
+                            value={startDate}
+                            onChange={(e) => setStartDate(e.target.value)}
+                        />
+                    </div>
                 </div>
 
+                {/* 结束时间 */}
                 <div className="field">
                     <div className="label-row">
                         <label>🔸 结束</label>
                         <button className="now-btn" onClick={setEndNow} type="button">📅 设为当前时间</button>
                     </div>
-                    <input
-                        type="datetime-local"
-                        value={endDate}
-                        onChange={(e) => setEndDate(e.target.value)}
-                        style={{ width: '100%', padding: '14px 18px', borderRadius: '40px', border: '1.5px solid #d0ddee' }}
-                    />
+                    <div className="input-group">
+                        <input
+                            type="datetime-local"
+                            value={endDate}
+                            onChange={(e) => setEndDate(e.target.value)}
+                        />
+                    </div>
                 </div>
 
+                {/* 操作按钮 */}
                 <div className="action-area">
                     <button className="calculate-btn" onClick={calculateDiff}>🧮 计算时间差</button>
                     <button className="reset-btn" onClick={resetAll}>↻ 清空</button>
@@ -327,8 +372,8 @@
                         <h3>📋 计算结果</h3>
                         <div className="diff-value">{formatDiff(diffMs)}</div>
                         <div className="diff-ms">𝗧𝗼𝘁𝗮𝗹 {diffMs.toLocaleString()} 毫秒</div>
-                        <hr style={{ borderColor: '#2a4066', margin: '16px 0' }} />
-                        <div style={{ fontSize: '0.9rem', opacity: 0.8 }}>
+                        <hr />
+                        <div className="meta-times">
                             🕒 开始: {startDate.replace('T', ' ')}<br />
                             🕓 结束: {endDate.replace('T', ' ')}
                         </div>
@@ -336,7 +381,7 @@
                 )}
 
                 <div className="footnote">
-                    ⚡ React 18 + Babel CDN · 时间精确到分钟 (秒默认为0) <br />
+                    ⚡ React 18 + Babel CDN · 时间精确到分钟 (秒默认为0)<br />
                     点击「设为当前时间」快速填入本地时间
                 </div>
             </div>
