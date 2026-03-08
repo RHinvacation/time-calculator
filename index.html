@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>React ⏱️ 时间计算器 (CDN版)</title>
+    <title>React 时间计算器 (修复版) </title>
     <style>
         * {
             box-sizing: border-box;
             font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
         }
         body {
-            background: linear-gradient(145deg, #f6f9fc 0%, #e6f0f5 100%);
+            background: linear-gradient(145deg, #f0f5fa 0%, #dde9f2 100%);
             min-height: 100vh;
             margin: 0;
             display: flex;
@@ -19,23 +19,20 @@
             padding: 16px;
         }
         .card {
-            background: rgba(255,255,255,0.8);
+            background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
             border-radius: 40px;
-            box-shadow: 0 20px 40px rgba(0,20,50,0.1), 0 8px 20px rgba(0,20,40,0.08);
+            box-shadow: 0 20px 40px rgba(0, 20, 40, 0.15);
             padding: 32px 28px;
             width: 100%;
-            max-width: 640px;
-            border: 1px solid rgba(255,255,255,0.5);
-            transition: all 0.2s ease;
+            max-width: 680px;
+            border: 1px solid rgba(255,255,255,0.6);
         }
         h1 {
             font-size: 2.2rem;
             font-weight: 600;
             margin: 0 0 12px 0;
-            color: #0a2a44;
-            letter-spacing: -0.5px;
+            color: #1a2e4f;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -47,23 +44,22 @@
             padding: 4px 14px;
             border-radius: 60px;
             font-weight: 400;
-            letter-spacing: 0.3px;
         }
         .sub {
             color: #2c3e66;
-            margin-bottom: 32px;
+            margin-bottom: 28px;
             font-size: 1rem;
             border-left: 4px solid #4b7bec;
             padding-left: 16px;
-            background: rgba(75, 123, 236, 0.04);
-            border-radius: 0 8px 8px 0;
+            background: rgba(75, 123, 236, 0.05);
+            border-radius: 0 12px 12px 0;
         }
         .field {
             margin-bottom: 24px;
             background: white;
             border-radius: 28px;
-            padding: 16px 20px;
-            box-shadow: 0 6px 12px rgba(0,20,40,0.04);
+            padding: 16px 22px;
+            box-shadow: 0 4px 12px rgba(0,20,40,0.04);
             border: 1px solid rgba(0,0,0,0.02);
         }
         .label-row {
@@ -71,7 +67,7 @@
             align-items: center;
             gap: 12px;
             flex-wrap: wrap;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
         .label-row label {
             font-weight: 600;
@@ -88,17 +84,17 @@
         .input-group input[type="datetime-local"] {
             flex: 2 1 240px;
             padding: 14px 18px;
-            border: 1.5px solid #dbe4ee;
+            border: 1.5px solid #d0ddee;
             border-radius: 40px;
             font-size: 1rem;
-            background: #fbfdff;
+            background: #f9fcff;
             transition: 0.15s;
             outline: none;
             color: #0a2540;
         }
         .input-group input[type="datetime-local"]:focus {
             border-color: #4b7bec;
-            box-shadow: 0 0 0 4px rgba(75, 123, 236, 0.15);
+            box-shadow: 0 0 0 4px rgba(75, 123, 236, 0.2);
         }
         .now-btn {
             background: white;
@@ -110,7 +106,6 @@
             font-size: 0.95rem;
             cursor: pointer;
             transition: 0.15s;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
             display: inline-flex;
             align-items: center;
             gap: 6px;
@@ -119,11 +114,6 @@
         .now-btn:hover {
             background: #e5efff;
             border-color: #4b7bec;
-            transform: scale(1.02);
-        }
-        .now-btn:active {
-            background: #c9ddfd;
-            transform: scale(0.98);
         }
         .action-area {
             display: flex;
@@ -143,20 +133,13 @@
             font-weight: 600;
             cursor: pointer;
             transition: 0.2s;
-            box-shadow: 0 10px 20px rgba(28, 60, 120, 0.3);
-            border: 1px solid rgba(255,255,255,0.2);
-            letter-spacing: 0.5px;
+            box-shadow: 0 8px 18px rgba(28, 60, 120, 0.3);
             flex: 1 1 auto;
         }
         .calculate-btn:hover {
             background: #234d84;
             transform: translateY(-2px);
-            box-shadow: 0 16px 28px rgba(28, 60, 120, 0.35);
-        }
-        .calculate-btn:active {
-            background: #163456;
-            transform: translateY(2px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 14px 24px rgba(28, 60, 120, 0.35);
         }
         .reset-btn {
             background: transparent;
@@ -170,8 +153,7 @@
             font-size: 1rem;
         }
         .reset-btn:hover {
-            background: rgba(75, 123, 236, 0.08);
-            border-color: #4b7bec;
+            background: rgba(75, 123, 236, 0.1);
         }
         .result-box {
             background: #0e213b;
@@ -180,20 +162,15 @@
             color: white;
             margin-top: 24px;
             box-shadow: inset 0 2px 8px rgba(0,0,0,0.2), 0 12px 24px rgba(0,10,30,0.2);
-            transition: 0.25s;
         }
         .result-box h3 {
             margin: 0 0 12px 0;
             font-weight: 500;
-            font-size: 1.2rem;
             color: #b3d0ff;
-            letter-spacing: 0.3px;
         }
         .diff-value {
-            font-size: 2.1rem;
+            font-size: 2rem;
             font-weight: 700;
-            line-height: 1.2;
-            word-break: break-word;
             background: rgba(255,255,255,0.06);
             padding: 16px 20px;
             border-radius: 24px;
@@ -203,7 +180,7 @@
         .diff-ms {
             font-size: 1rem;
             opacity: 0.75;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: monospace;
             background: rgba(0,0,0,0.3);
             display: inline-block;
             padding: 6px 18px;
@@ -226,220 +203,148 @@
             border-top: 1px dashed #b7cef0;
             padding-top: 20px;
         }
-        .flex-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px 16px;
-            align-items: center;
-        }
-        hr {
-            border: none;
-            border-top: 2px dotted #c1d6f0;
-            margin: 16px 0;
-        }
     </style>
 </head>
 <body>
 <div id="root"></div>
 
-<!-- 使用 CDN 加载 React, ReactDOM 和 Babel -->
-<script src="https://unpkg.com/react@18/2.0/umd/react.development.js"></script>
-<script src="https://unpkg.com/react-dom@18/2.0/umd/react-dom.development.js"></script>
+<!-- 使用正确的 React 18 CDN 链接 -->
+<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<!-- Babel Standalone 编译 JSX -->
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-<!-- 组件代码 (JSX) 通过 Babel 实时编译 -->
 <script type="text/babel">
-    (function() {
-        // 从全局 React 解构所需 hook
-        const { useState } = React;
+    const { useState } = React;
 
-        // ---------- 辅助函数 (本地日期时间处理) ----------
-        // 将 Date 对象格式化为 datetime-local 可识别的本地字符串 (YYYY-MM-DDTHH:mm)
-        function formatDateForInput(date) {
-            const year = date.getFullYear();
-            const month = (date.getMonth() + 1).toString().padStart(2, '0');
-            const day = date.getDate().toString().padStart(2, '0');
-            const hours = date.getHours().toString().padStart(2, '0');
-            const minutes = date.getMinutes().toString().padStart(2, '0');
-            return `${year}-${month}-${day}T${hours}:${minutes}`;
-        }
+    // 辅助：日期时间字符串 <-> 本地 Date
+    function formatDateForInput(date) {
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const day = date.getDate().toString().padStart(2, '0');
+        const hours = date.getHours().toString().padStart(2, '0');
+        const minutes = date.getMinutes().toString().padStart(2, '0');
+        return `${year}-${month}-${day}T${hours}:${minutes}`;
+    }
 
-        // 将 datetime-local 字符串解析为本地时间的 Date 对象 (避免 UTC 陷阱)
-        function parseLocalDateTime(str) {
-            if (!str) return null;
-            const [datePart, timePart] = str.split('T');
-            if (!datePart || !timePart) return null;
-            const [year, month, day] = datePart.split('-').map(Number);
-            const [hour, minute] = timePart.split(':').map(Number);
-            // 使用本地时间构造函数 (月份从0开始)
-            return new Date(year, month - 1, day, hour, minute, 0, 0);
-        }
+    function parseLocalDateTime(str) {
+        if (!str) return null;
+        const [datePart, timePart] = str.split('T');
+        if (!datePart || !timePart) return null;
+        const [year, month, day] = datePart.split('-').map(Number);
+        const [hour, minute] = timePart.split(':').map(Number);
+        return new Date(year, month - 1, day, hour, minute, 0, 0);
+    }
 
-        // ---------- 主组件 ----------
-        function TimeCalculator() {
-            const [startDate, setStartDate] = useState('');
-            const [endDate, setEndDate] = useState('');
-            const [diffMs, setDiffMs] = useState(null);      // 相差毫秒
-            const [error, setError] = useState('');
+    function TimeCalculator() {
+        const [startDate, setStartDate] = useState('');
+        const [endDate, setEndDate] = useState('');
+        const [diffMs, setDiffMs] = useState(null);
+        const [error, setError] = useState('');
 
-            // 设置开始时间为当前本地时间
-            const setStartNow = () => {
-                setStartDate(formatDateForInput(new Date()));
-            };
+        const setStartNow = () => setStartDate(formatDateForInput(new Date()));
+        const setEndNow = () => setEndDate(formatDateForInput(new Date()));
 
-            // 设置结束时间为当前本地时间
-            const setEndNow = () => {
-                setEndDate(formatDateForInput(new Date()));
-            };
+        const calculateDiff = () => {
+            setError('');
+            setDiffMs(null);
 
-            // 计算差值
-            const calculateDiff = () => {
-                // 清除旧结果
-                setError('');
-                setDiffMs(null);
+            const start = parseLocalDateTime(startDate);
+            const end = parseLocalDateTime(endDate);
 
-                // 解析日期
-                const start = parseLocalDateTime(startDate);
-                const end = parseLocalDateTime(endDate);
+            if (!start || !end) {
+                setError('❌ 请填写完整的开始和结束时间');
+                return;
+            }
+            if (isNaN(start) || isNaN(end)) {
+                setError('❌ 无效的日期时间');
+                return;
+            }
+            if (end < start) {
+                setError('⚠️ 结束时间不能早于开始时间');
+                return;
+            }
 
-                if (!start || !end) {
-                    setError('❌ 请完整填写开始和结束时间');
-                    return;
-                }
+            setDiffMs(end.getTime() - start.getTime());
+        };
 
-                // 检查有效性
-                if (isNaN(start.getTime()) || isNaN(end.getTime())) {
-                    setError('❌ 日期时间格式无效');
-                    return;
-                }
+        const resetAll = () => {
+            setStartDate('');
+            setEndDate('');
+            setDiffMs(null);
+            setError('');
+        };
 
-                if (end < start) {
-                    setError('⚠️ 结束时间必须晚于或等于开始时间');
-                    return;
-                }
+        const formatDiff = (ms) => {
+            const totalSeconds = Math.floor(ms / 1000);
+            const days = Math.floor(totalSeconds / 86400);
+            const hours = Math.floor((totalSeconds % 86400) / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+            return `${days} 天 ${hours} 小时 ${minutes} 分钟 ${seconds} 秒`;
+        };
 
-                const diff = end.getTime() - start.getTime();
-                setDiffMs(diff);
-            };
+        return (
+            <div className="card">
+                <h1>⏱️ 时间计算器 <span>本地时间</span></h1>
+                <div className="sub">精确计算两个日期时间之差 (精确到秒)</div>
 
-            // 重置所有字段
-            const resetAll = () => {
-                setStartDate('');
-                setEndDate('');
-                setDiffMs(null);
-                setError('');
-            };
-
-            // 格式化显示差异
-            const formatDiff = (ms) => {
-                if (ms === null || ms === undefined) return '';
-                const totalSeconds = Math.floor(ms / 1000);
-                const totalMinutes = Math.floor(totalSeconds / 60);
-                const totalHours = Math.floor(totalMinutes / 60);
-                const days = Math.floor(totalHours / 24);
-
-                const hours = totalHours % 24;
-                const minutes = totalMinutes % 60;
-                const seconds = totalSeconds % 60;
-
-                return `${days} 天 ${hours} 小时 ${minutes} 分钟 ${seconds} 秒`;
-            };
-
-            return (
-                <div className="card">
-                    <h1>
-                        ⏳ 时间计算器
-                        <span>本地时区</span>
-                    </h1>
-                    <div className="sub">精确计算两个日期时间之差 (精确到秒)</div>
-
-                    {/* 开始时间区块 */}
-                    <div className="field">
-                        <div className="label-row">
-                            <label>🔹 开始</label>
-                            <button className="now-btn" onClick={setStartNow} type="button">
-                                📅 设为当前时间
-                            </button>
-                        </div>
-                        <div className="input-group">
-                            <input
-                                type="datetime-local"
-                                value={startDate}
-                                onChange={(e) => setStartDate(e.target.value)}
-                                step="1"   // 部分浏览器可显示秒 (但界面可能仅显示到分钟, 无妨)
-                            />
-                        </div>
+                <div className="field">
+                    <div className="label-row">
+                        <label>🔹 开始</label>
+                        <button className="now-btn" onClick={setStartNow} type="button">📅 设为当前时间</button>
                     </div>
-
-                    {/* 结束时间区块 */}
-                    <div className="field">
-                        <div className="label-row">
-                            <label>🔸 结束</label>
-                            <button className="now-btn" onClick={setEndNow} type="button">
-                                📅 设为当前时间
-                            </button>
-                        </div>
-                        <div className="input-group">
-                            <input
-                                type="datetime-local"
-                                value={endDate}
-                                onChange={(e) => setEndDate(e.target.value)}
-                                step="1"
-                            />
-                        </div>
-                    </div>
-
-                    {/* 操作按钮区 */}
-                    <div className="action-area">
-                        <button className="calculate-btn" onClick={calculateDiff}>
-                            🧮 计算时间差
-                        </button>
-                        <button className="reset-btn" onClick={resetAll}>
-                            ↻ 清空
-                        </button>
-                    </div>
-
-                    {/* 错误提示 */}
-                    {error && (
-                        <div className="error-message">
-                            {error}
-                        </div>
-                    )}
-
-                    {/* 结果显示 */}
-                    {diffMs !== null && !error && (
-                        <div className="result-box">
-                            <h3>📋 计算结果</h3>
-                            <div className="diff-value">
-                                {formatDiff(diffMs)}
-                            </div>
-                            <div className="diff-ms">
-                                𝗧𝗼𝘁𝗮𝗹 {diffMs.toLocaleString()} 毫秒
-                            </div>
-                            <hr />
-                            <div style={{ fontSize: '0.9rem', opacity: 0.8 }}>
-                                🕒 开始: {startDate.replace('T', ' ')}<br />
-                                🕓 结束: {endDate.replace('T', ' ')}
-                            </div>
-                        </div>
-                    )}
-
-                    {/* 提示信息 */}
-                    <div className="footnote">
-                        ⚡ 基于 React + Babel CDN · 时间精确到分钟 (秒默认为0) <br/>
-                        点击「设为当前时间」可快速填入本地时间
-                    </div>
+                    <input
+                        type="datetime-local"
+                        value={startDate}
+                        onChange={(e) => setStartDate(e.target.value)}
+                        style={{ width: '100%', padding: '14px 18px', borderRadius: '40px', border: '1.5px solid #d0ddee' }}
+                    />
                 </div>
-            );
-        }
 
-        // ---------- 渲染到 DOM ----------
-        const container = document.getElementById('root');
-        const root = ReactDOM.createRoot(container);
-        root.render(<TimeCalculator />);
-    })();
+                <div className="field">
+                    <div className="label-row">
+                        <label>🔸 结束</label>
+                        <button className="now-btn" onClick={setEndNow} type="button">📅 设为当前时间</button>
+                    </div>
+                    <input
+                        type="datetime-local"
+                        value={endDate}
+                        onChange={(e) => setEndDate(e.target.value)}
+                        style={{ width: '100%', padding: '14px 18px', borderRadius: '40px', border: '1.5px solid #d0ddee' }}
+                    />
+                </div>
+
+                <div className="action-area">
+                    <button className="calculate-btn" onClick={calculateDiff}>🧮 计算时间差</button>
+                    <button className="reset-btn" onClick={resetAll}>↻ 清空</button>
+                </div>
+
+                {error && <div className="error-message">{error}</div>}
+
+                {diffMs !== null && !error && (
+                    <div className="result-box">
+                        <h3>📋 计算结果</h3>
+                        <div className="diff-value">{formatDiff(diffMs)}</div>
+                        <div className="diff-ms">𝗧𝗼𝘁𝗮𝗹 {diffMs.toLocaleString()} 毫秒</div>
+                        <hr style={{ borderColor: '#2a4066', margin: '16px 0' }} />
+                        <div style={{ fontSize: '0.9rem', opacity: 0.8 }}>
+                            🕒 开始: {startDate.replace('T', ' ')}<br />
+                            🕓 结束: {endDate.replace('T', ' ')}
+                        </div>
+                    </div>
+                )}
+
+                <div className="footnote">
+                    ⚡ React 18 + Babel CDN · 时间精确到分钟 (秒默认为0) <br />
+                    点击「设为当前时间」快速填入本地时间
+                </div>
+            </div>
+        );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<TimeCalculator />);
 </script>
-
-<!-- 注意：部分浏览器对 datetime-local 的 step 支持不同，但不影响核心功能 -->
 </body>
 </html>
